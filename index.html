@@ -69,12 +69,40 @@
         translate: -50% -50%;
         color: red;
       }
+
+      #mobile {
+        display: none;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        justify-content: space-between;
+      }
+      #mobile button {
+        width: 5rem;
+        aspect-ratio: 1;
+      }
+
+      @media (pointer: none) {
+        #mobile {
+          display: flex;
+        }
+      }
     </style>
   </head>
   <body>
 
     <div id="container">
 
+    </div>
+
+    <div id="mobile">
+      <button ontouchstart="prev_frame()" ontouchend="remove_previous()"><</button>
+
+      <button onclick="setEraseMode(false)">pen</button>
+      <button onclick="setEraseMode(true)">eraser</button>
+
+      <button ontouchstart="next_frame()" ontouchend="remove_previous()">></button>
     </div>
 
     <canvas id="overlay"></canvas>
