@@ -69,13 +69,22 @@ function load_canvases(images) {
     overlay.strokeStyle = playerColor;
   });
   document.addEventListener("mousedown", canvas_mousedown);
+  document.addEventListener("touchstart", function(e) {
+    const x = (e.pageX - canvasTransform.x) * canvasTransform.sx;
+    const y = (e.pageY - canvasTransform.y) * canvasTransform.sy;
+    previousPosition = { x: x, y: y };
+    if (e.touches) canvas_mousedown(e.touches[0], true);
+  });
   document.addEventListener("mouseup", canvas_mouseup);
+  document.addEventListener("touchend", function(e) {
+    canvas_mouseup();
+  });
   document.addEventListener("blur", canvas_mouseup);
   document.addEventListener("mousemove", canvas_move);
-  document.addEventListener("contextmenu", function(e) {
-    e.preventDefault();
-    setEraseMode(true);
+  document.addEventListener("touchmove", function(e) {
+    if (e.touches) canvas_move(e.touches[0]);
   });
+  document.addEventListener("contextmenu", function(e) { e.preventDefault() });
 
   window.addEventListener("resize", canvas_resize);
   canvas_resize();
@@ -83,23 +92,27 @@ function load_canvases(images) {
   setEraseMode(false);
 }
 
-function canvas_mousedown(e) {
+function canvas_mousedown(e, touchstart) {
+  if (!touchstart && e.button == 2) {
+    setEraseMode(true);
+  }
   const context = _canvases[currentFrame].__context;
   const x = (e.pageX - canvasTransform.x) * canvasTransform.sx;
   const y = (e.pageY - canvasTransform.y) * canvasTransform.sy;
   mark(context, x, y);
   canvasMousedown = true;
+  if (!touchstart) overlay.canvas.classList.add("active");
 }
 function canvas_move(e) {
   if (currentFrame == -1) return;
   const x = (e.pageX - canvasTransform.x) * canvasTransform.sx;
   const y = (e.pageY - canvasTransform.y) * canvasTransform.sy;
-  const context = _canvases[currentFrame].__context;
-  if (canvasMousedown) mark(context, x, y);
+  if (canvasMousedown) mark(_canvases[currentFrame].__context, x, y);
   previousPosition = { x: x, y: y };
 }
-function canvas_mouseup(e) {
+function canvas_mouseup() {
   canvasMousedown = false;
+  overlay.canvas.classList.remove("active");
   setEraseMode(false);
 }
 
