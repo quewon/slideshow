@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      body {
+        overflow: hidden;
+        font-family: sans-serif;
+      }
+
+      #container, #overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        aspect-ratio: 1;
+        max-height: 100%;
+        max-width: 100%;
+        border: 1px solid lightgray;
+      }
+
+      img, canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        width: inherit;
+        height: inherit;
+        aspect-ratio: inherit;
+      }
+      canvas {
+        mix-blend-mode: multiply;
+      }
+
+      #overlay {
+        cursor: none;
+      }
+
+      .noselect {
+        -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none; /* Safari */
+           -khtml-user-select: none; /* Konqueror HTML */
+             -moz-user-select: none; /* Old versions of Firefox */
+              -ms-user-select: none; /* Internet Explorer/Edge */
+                  user-select: none; /* Non-prefixed version, currently
+                                        supported by Chrome, Edge, Opera and Firefox */
+      }
+
+      .fade {
+        opacity: .5;
+      }
+
+      a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        cursor: pointer;
+        color: red;
+        text-decoration: underline;
+      }
+      a:active {
+        opacity: .5;
+      }
+
+      .mission {
+        position: absolute;
+        translate: -50% -50%;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="container">
+
+    </div>
+
+    <canvas id="overlay"></canvas>
+    <a onclick="howToPlay.showModal();">help</a>
+
+    <dialog id="how-to-play">
+      <h1>welcome to my little slideshow</h1>
+      <ul>
+        <li>use <b>spacebar</b> or the <b>arrow keys</b> to page through</li>
+        <li>use your <b>mouse</b> to draw on the slides (right click to erase!)</li>
+        <li>you can change your pen color with various number keys or alphabet keys</li>
+        <li>click on the <u style="color: red">help</u> button in the corner to reopen this popup!</li>
+      </ul>
+      <p style="text-align: center;"><button onclick="this.parentNode.parentNode.close()">close panel</button></p>
+    </dialog>
+
+  </body>
+  <script type="text/javascript" src="imageloader.js"></script>
+  <script type="text/javascript" src="slideshow.js"></script>
+  <script type="text/javascript" src="canvas.js"></script>
+  <script type="text/javascript" src="slides.js"></script>
+  <script type="text/javascript">
+    var images = {};
+    for (let i=0; i<=60; i++) {
+      images[i] = "frames/"+i+".svg";
+    }
+    load_canvases(images);
+    load_images(images, init_slideshow);
+
+    var howToPlay = document.getElementById("how-to-play");
+    howToPlay.addEventListener("mousedown", function(e) {
+      e.stopPropagation();
+    });
+    document.querySelector("a").onmousedown = function(e) {
+      e.stopPropagation();
+    }
+
+    howToPlay.showModal();
+  </script>
+</html>
