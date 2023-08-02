@@ -76,11 +76,11 @@ function next_slide(slide) {
   if (data && data.next) {
     if (data.next == slide) {
       data.blocked = true;
-      container.appendChild(data.mission);
+      if (data.mission) container.appendChild(data.mission);
       previousBlocked = slide;
     } else {
       data.blocked = false;
-      data.mission.remove();
+      if (data.mission) data.mission.remove();
     }
     return data.next;
   }
@@ -91,7 +91,7 @@ function next_slide(slide) {
 function clear_slide() {
   if (previousBlocked) {
     slide_data[previousBlocked].blocked = false;
-    slide_data[previousBlocked].mission.remove();
+    if (slide_data[previousBlocked].mission) slide_data[previousBlocked].mission.remove();
     previousBlocked = null;
   }
 }
@@ -111,7 +111,7 @@ function mark_slide(slide, x, y) {
     ) {
       if (r.next) {
         data.next = r.next;
-        if (data.blocked) {
+        if (data.blocked && data.mission) {
           data.mission.remove();
         }
       } else if (r.mission) {
