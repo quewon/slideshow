@@ -8,7 +8,6 @@ function load_images(images, onload) {
     var img = new Image();
     img.src = images[name];
     img.setAttribute("draggable", false);
-    img.className = "noselect";
     img.onload = function() {
       _images[name] = this;
       loadedImages++;
