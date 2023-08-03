@@ -7,6 +7,7 @@
       body {
         overflow: hidden;
         font-family: sans-serif;
+        background: white;
       }
       * {
         touch-action: manipulation;
@@ -18,6 +19,8 @@
         left: 50%;
         translate: -50% -50%;
         aspect-ratio: 1;
+        /* max-height: calc(100% - 2px);
+        max-width: calc(100% - 2px); */
         max-height: 100%;
         max-width: 100%;
         border: 1px solid lightgray;
@@ -144,6 +147,9 @@
       e.stopPropagation();
     }
 
+    howToPlay.addEventListener("keydown", function(e) {
+      e.stopImmediatePropagation();
+    });
     howToPlay.showModal();
   </script>
 </html>
